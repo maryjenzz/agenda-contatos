@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Contatos</title>
+    <link rel="stylesheet" href="/style.css"></head>
+<body>
+    <header>
+        <h1>Agenda de Contatos</h1>
+        <a href="/contatos/novo" class="btn btn-primary">➕ Adicionar Novo Contato</a>
+    </header>
+<% if (success_msg && success_msg.length > 0) { %>
+    <div class="flash-message flash-success">
+        <%= success_msg %>
+    </div>
+<% } %>
+
+<% if (error_msg && error_msg.length > 0) { %>
+    <div class="flash-message flash-error">
+        <%= error_msg %>
+    </div>
+<% } %>
+<main>
+        <% if (contatos.length === 0) { %>
+            <p class="alerta">Nenhum contato cadastrado ainda. Clique em "Adicionar Novo Contato" para começar!</p>
+        <% } else { %>
+            
+            <div class="contatos-grid">
+                <% contatos.forEach(contato => { %>
+                    <div class="card">
+                        <div>
+                            <h3><%= contato.nome %></h3>
+                            <p class="info-item">
+                                <strong>Telefone:</strong> <%= contato.telefone %>
+                            </p>
+                            <% if (contato.email) { %>
+                                <p class="info-item">
+                                    <strong>Email:</strong> <span class="label-email"><%= contato.email %></span>
+                                </p>
+                            <% } %>
+                            <% if (contato.observacao) { %>
+                                <p class="info-item">
+                                    <strong>Notas:</strong> <%= contato.observacao %>
+                                </p>
+                            <% } %>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <a href="/contatos/<%= contato.id %>/editar" class="btn-action btn-edit">
+                                Editar
+                            </a>
+                            
+                            <form action="/contatos/<%= contato.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir <%= contato.nome %>?');">
+                                <button type="submit" class="btn-action btn-delete">
+                                    Excluir
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+
+        <% } %>
+    </main>
+</body>
+</html>
