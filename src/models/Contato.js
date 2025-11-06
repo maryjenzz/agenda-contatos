@@ -1,4 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
+    // Define o modelo 'Contato' com seus campos
     const Contato = sequelize.define('Contato', {
         nome: {
             type: DataTypes.STRING,
@@ -10,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         email: {
             type: DataTypes.STRING,
-            allowNull: true, // Email é opcional, como você sugeriu
+            allowNull: true, 
             unique: true
         },
         observacao: {

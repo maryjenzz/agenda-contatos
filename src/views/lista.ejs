@@ -11,6 +11,7 @@
         <a href="/contatos/novo" class="btn btn-primary">
             + Adicionar Novo Contato</a>
     </header>
+    <!-- MENSAGENS FLASH -->
 <% if (success_msg && success_msg.length > 0) { %>
     <div class="flash-message flash-success">
         <%= success_msg %>
@@ -47,6 +48,7 @@
                             <% } %>
                         </div>
                         
+                        <!-- Ações de Editar e Excluir -->
                         <div class="card-actions">
                             <a href="/contatos/<%= contato.id %>/editar" class="btn-action btn-edit">
                                 Editar

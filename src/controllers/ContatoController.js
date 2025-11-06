@@ -94,9 +94,7 @@ const atualizar = async (req, res) => {
             return res.redirect('/contatos');
         }
 
-        // --- ADICIONANDO MENSAGEM DE SUCESSO ---
         req.flash('success_msg', '✏️ Contato atualizado com sucesso!');
-        // --------------------------------------
         res.redirect('/contatos');
 
     } catch (error) {
@@ -119,9 +117,7 @@ const excluir = async (req, res) => {
             return res.redirect('/contatos');
         }
 
-        // --- ADICIONANDO MENSAGEM DE SUCESSO ---
         req.flash('success_msg', '🗑️ Contato excluído com sucesso!');
-        // --------------------------------------
         res.redirect('/contatos');
 
     } catch (error) {
