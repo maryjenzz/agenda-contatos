@@ -1,7 +1,7 @@
 
 // É responsável por controlar o que acontece quando alguém acessa certas páginas ou envia formulários no site (como criar, listar, editar ou excluir contatos).
  
-const { Contato } = require('../database/db'); // Importa o modelo Contato
+const { Contato } = require('../database/db'); // Importa o modelo Contato do banco de dados
 
 
 // 1. Listar todos os contatos (GET /contatos)
@@ -12,7 +12,7 @@ const listar = async (req, res) => {
             order: [['nome', 'ASC']]
         });
         
-        // Mostra a página lista.ejs e envia os dados dos contatos pra lá
+        // Mostra a página principal (lista.ejs) e envia os dados dos contatos pra lá
         res.render('lista', { contatos: contatos }); 
 
     } catch (error) {

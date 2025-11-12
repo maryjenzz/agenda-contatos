@@ -9,7 +9,7 @@ const sequelize = new Sequelize({
   storage: 'database.sqlite' // Nome do arquivo onde os dados vao ficar salvos
 });
 
-// Importa o modelo Contato, que diz a descrição da tabela
+// Importa o modelo Contato 
 // O (sequelize, DataTypes) é passado como parâmetro pra que o modelo saiba em qual banco ele vai ser criado e quais tipos de dados usar.
 const Contato = require('../models/Contato')(sequelize, DataTypes);
 

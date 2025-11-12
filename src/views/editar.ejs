@@ -13,7 +13,7 @@
 
     <main>
         <!-- Formulário de edição -->
-        <form action="/contatos/<%= contato.id %>?_method=PUT" method="POST">
+        <form action="/contatos/<%= contato.id %>?_method=PUT" method="POST"> // Usando method-override para permitir PUT via formulário POST
             
             <div class="form-group">
                 <label for="nome">Nome Completo:</label>
