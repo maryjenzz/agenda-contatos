@@ -1,5 +1,6 @@
+// Exporta uma função que recebe o sequelize que é a conexão com o banco de dados e o DataTypes para definir os tipos de dados (string, número, etc)
 module.exports = (sequelize, DataTypes) => {
-    // Define o modelo 'Contato' com seus campos
+    // Cria o modelo Contao e isso vai gerar a tabela 'Contatos' no banco de dados
     const Contato = sequelize.define('Contato', {
         nome: {
             type: DataTypes.STRING,

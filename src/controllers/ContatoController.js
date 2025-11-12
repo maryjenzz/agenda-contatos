@@ -1,46 +1,46 @@
-const { Contato } = require('../database/db');
+
+// É responsável por controlar o que acontece quando alguém acessa certas páginas ou envia formulários no site (como criar, listar, editar ou excluir contatos).
+ 
+const { Contato } = require('../database/db'); // Importa o modelo Contato
+
 
 // 1. Listar todos os contatos (GET /contatos)
 const listar = async (req, res) => {
-    // permite buscar todos os contatos no banco de dados
+    // Buscar todos os contatos no banco de dados e ordena por nome
     try {
         const contatos = await Contato.findAll({
             order: [['nome', 'ASC']]
         });
         
-        // Renderiza a view 'lista.ejs' e passa o array 'contatos'
+        // Mostra a página lista.ejs e envia os dados dos contatos pra lá
         res.render('lista', { contatos: contatos }); 
-        // --------------------
 
     } catch (error) {
         console.error("Erro ao listar contatos:", error);
-        // Em caso de erro, renderiza uma página de erro ou envia a mensagem
+        // Se der erro, mostra uma página de erro 
         res.status(500).send("Erro interno do servidor ao buscar contatos."); 
     }
 };
 
 // 2. Mostrar formulário de criação (GET /contatos/novo)
 const formCriar = (req, res) => {
-    // Renderiza a view 'criar.ejs'
+    // Mostra a página 'criar.ejs'
     res.render('criar'); 
-    // --------------------
 };
-
-// --- Funções de Manipulação de Dados (CRUD) ---
 
 // 3. Criar um novo contato (POST /contatos)
 const criar = async (req, res) => {
-    // Extrai os dados do corpo da requisição
+    // Pega os dados enviados (req.body)
     try {
         const { nome, telefone, email, observacao } = req.body;
         
-        // Validação simples 
+        // Verifica se o nome e telefone foram preenchidos 
         if (!nome || !telefone) {
              req.flash('error_msg', 'Nome e Telefone são campos obrigatórios.');
-             return res.redirect('/contatos/novo'); // Redireciona de volta ao formulário
+             return res.redirect('/contatos/novo'); 
         }
 
-        // Cria um novo contato no banco de dados
+        // Se estiver tudo certo, cria o contato no banco de dados
         await Contato.create({ 
             nome, 
             telefone, 
@@ -48,25 +48,25 @@ const criar = async (req, res) => {
             observacao 
         });
         
-        // --- MENSAGEM DE SUCESSO ---
-        req.flash('success_msg', '✅ Contato criado com sucesso!');
-        // --------------------------------------
+        // Mostra uma mensagem de sucesso e redireciona para a lista de contatos
+        req.flash('success_msg', '✅ Contato criado com sucesso!'); // req.flash é usado para mensagens temporárias
         res.redirect('/contatos'); 
 
     } catch (error) {
         console.error("Erro ao criar contato:", error);
-        // --- MENSAGEM DE ERRO ---
+        // Se der erro, mostra uma mensagem de erro 
         req.flash('error_msg', '❌ Erro ao cadastrar contato. Verifique os dados (Ex: Email duplicado).');
-        // --------------------------------------
-        res.redirect('/contatos/novo'); // Redireciona de volta para tentar de novo
+        res.redirect('/contatos/novo'); // e redireciona de volta para o formulário
     }
 };
 
 // 4. Mostrar formulário de edição (GET /contatos/:id/editar)
 const formEditar = async (req, res) => {
-    // Extrai o ID do contato dos parâmetros da URL
+    // Pega o ID da URL (req.params.id)
     const { id } = req.params;
+
     try {
+        // Busca esse contao no banco de dados (findByPk = ID) 
         const contato = await Contato.findByPk(id);
         
         // Verifica se o contato existe
@@ -74,11 +74,10 @@ const formEditar = async (req, res) => {
             return res.status(404).send("Contato não encontrado para edição.");
         }
         
-        // Renderiza a view 'editar.ejs' passando o objeto 'contato'
+        // Se existir, mostra a página de edição com os dados do contato
         res.render('editar', { contato: contato });
-        // --------------------
 
-    // Em caso de erro, loga e envia uma resposta de erro
+    // Em caso de erro, mostra uma mensagem de erro
     } catch (error) {
         console.error("Erro ao buscar contato para edição:", error);
         res.status(500).send("Erro interno ao buscar dados para edição.");
@@ -87,10 +86,10 @@ const formEditar = async (req, res) => {
 
 // 5. Atualizar um contato (PUT /contatos/:id)
 const atualizar = async (req, res) => {
-    // Extrai o ID do contato dos parâmetros da URL
+    // Pega o ID da URL 
     const { id } = req.params;
     try {
-        // Atualiza o contato no banco de dados com os dados do corpo da requisição
+        // Atualiza o contato no banco (Contato.update())
         const [numeroDeLinhasAfetadas] = await Contato.update(req.body, {
             where: { id: id }
         });
@@ -101,11 +100,11 @@ const atualizar = async (req, res) => {
             return res.redirect('/contatos');
         }
 
-        // --- MENSAGEM DE SUCESSO ---
+        // Mostra mensagem de sucesso se tudo der certo
         req.flash('success_msg', '✏️ Contato atualizado com sucesso!');
         res.redirect('/contatos');
 
-        // --- MENSAGEM DE ERRO ---
+        // Caso dê erro, mostra mensagem de erro
     } catch (error) {
         console.error("Erro ao atualizar contato:", error);
         req.flash('error_msg', '❌ Erro ao atualizar o contato. Verifique os dados.');
@@ -115,9 +114,9 @@ const atualizar = async (req, res) => {
 
 // 6. Excluir um contato (DELETE /contatos/:id)
 const excluir = async (req, res) => {
-    // Extrai o ID do contato dos parâmetros da URL
+    // Pega o ID da URL
     const { id } = req.params;
-    // Tenta excluir o contato do banco de dados
+    // Tenta excluir o contato do banco de dados (Contato.destroy())
     try {
         const numeroDeLinhasExcluidas = await Contato.destroy({
             where: { id: id }
@@ -129,11 +128,11 @@ const excluir = async (req, res) => {
             return res.redirect('/contatos');
         }
 
-        // --- MENSAGEM DE SUCESSO ---
+        // Mostra mensagem de sucesso
         req.flash('success_msg', '🗑️ Contato excluído com sucesso!');
         res.redirect('/contatos');
 
-        // --- MENSAGEM DE ERRO ---
+        // ou de Erro
     } catch (error) {
         console.error("Erro ao excluir o contato:", error);
         req.flash('error_msg', '❌ Erro interno ao excluir o contato.');
@@ -141,7 +140,7 @@ const excluir = async (req, res) => {
     }
 };
 
-// Exporta as funções do controller
+// Exporta as funções para que outras partes do sistema possam usá-las
 module.exports = {
     listar,
     formCriar,
