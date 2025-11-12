@@ -11,6 +11,7 @@
         <a href="/contatos/novo" class="btn btn-primary">
             + Adicionar Novo Contato</a>
     </header>
+
     <!-- MENSAGENS FLASH -->
 <% if (success_msg && success_msg.length > 0) { %>
     <div class="flash-message flash-success">
@@ -24,10 +25,13 @@
     </div>
 <% } %>
 <main>
+
+        <!-- Verifica se há contatos para exibir -->
         <% if (contatos.length === 0) { %>
             <p class="alerta">Nenhum contato cadastrado ainda. Clique em "Adicionar Novo Contato" para começar!</p>
         <% } else { %>
             
+            <!-- Exibe os contatos em um layout de cartões -->
             <div class="contatos-grid">
                 <% contatos.forEach(contato => { %>
                     <div class="card">
@@ -50,10 +54,9 @@
                         
                         <!-- Ações de Editar e Excluir -->
                         <div class="card-actions">
-                            <a href="/contatos/<%= contato.id %>/editar" class="btn-action btn-edit">
-                                Editar
-                            </a>
+                            <a href="/contatos/<%= contato.id %>/editar" class="btn-action btn-edit"> Editar </a>
                             
+                            <!-- method-override para permitir DELETE via formulário POST -->
                             <form action="/contatos/<%= contato.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir <%= contato.nome %>?');">
                                 <button type="submit" class="btn-action btn-delete">
                                     Excluir

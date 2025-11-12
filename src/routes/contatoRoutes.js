@@ -6,7 +6,7 @@ const contatoController = require('../controllers/ContatoController');
 router.get('/', contatoController.listar);         // Listar todos
 router.post('/', contatoController.criar);        // Criar novo
 
-// Rotas para formulários (serão implementadas com HTML depois)
+// Rotas para formulários
 router.get('/novo', contatoController.formCriar); // Rota para a página de criação
 
 // Rotas com parâmetro de ID (para editar/excluir)

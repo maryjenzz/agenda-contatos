@@ -14,7 +14,7 @@ sequelize.sync()
     .then(() => console.log('✅ Banco de dados e tabela de contatos sincronizados com sucesso!'))
     .catch(err => console.error('❌ Erro ao sincronizar o banco de dados:', err));
 
-
+// Exporta a instância do Sequelize e o modelo Contato
 module.exports = {
     sequelize,
     Contato
